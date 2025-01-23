@@ -1,0 +1,39 @@
+<div class="home-container">
+    <!-- Top Section -->
+    <section class="top-section">
+      <div class="overlay">
+        <h1>Welcome to E-Shop!</h1>
+        <p>Your one-stop destination for all your shopping needs.</p>
+      </div>
+    </section>
+  
+    <!-- Middle Section -->
+    <section class="mid-section">
+      <div class="content">
+        <div class="text">
+          <h2>About Us</h2>
+          <p>
+            At E-Shop, we are committed to bringing you the best quality products at unbeatable prices. 
+            Discover a variety of products that suit your lifestyle and preferences. 
+          </p>
+        </div>
+        <div class="image">
+          <img src="WIN_20240317_04_18_44_Pro.jpg" alt="About Us" />
+        </div>
+      </div>
+    </section>
+  
+    <!-- Bottom Section -->
+    <section class="bottom-section">
+      <h2>Our Products</h2>
+      <div class="products-container">
+        <div class="product" *ngFor="let product of products">
+          <img [src]="product.imageUrl" [alt]="product.name" />
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price | currency }}</p>
+          <button class="btn-see-details" (click)="seeDetails(product.id)">See Details</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  

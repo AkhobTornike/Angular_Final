@@ -1,0 +1,35 @@
+<!-- header.component.html -->
+<header class="header">
+    <div class="header-left">
+      <i class="left-icon">&#9776;</i>
+    </div>
+  
+    <nav class="header-center">
+      <a href="/home" routerLinkActive="active">Home</a>
+      <a href="/about-us" routerLinkActive="active">About</a>
+    </nav>
+  
+    <div class="header-right">
+      <div class="dropdown">
+        <span class="material-symbols-outlined">
+            account_circle
+            </span>
+        <div class="dropdown-menu">
+          <!-- Display Login/Register if not logged in -->
+          <ng-container *ngIf="!isLoggedIn">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </ng-container>
+  
+          <!-- Display Logout if logged in -->
+          <ng-container *ngIf="isLoggedIn">
+            <a (click)="logout()">Logout</a>
+          </ng-container>
+        </div>
+      </div>
+  
+      <span class="material-symbols-outlined" (click)="openCart()">
+        shopping_cart
+        </span>
+    </div>
+  </header>

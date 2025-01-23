@@ -1,0 +1,100 @@
+// header.component.scss
+
+$header-height: 70px;
+$header-bg: #007bff;
+$header-text-color: white;
+$header-hover-bg: darken($header-bg, 10%);
+$dropdown-bg: white;
+$dropdown-text-color: #333;
+$dropdown-hover-bg: #f3f4f6;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: $header-height;
+  padding: 0 20px;
+  background-color: $header-bg;
+  color: $header-text-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .header-left {
+    .left-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+  }
+
+  .header-center {
+    display: flex;
+    gap: 20px;
+
+    a {
+      color: $header-text-color;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 600;
+      transition: color 0.3s;
+      cursor: pointer;
+
+      &.active {
+        border-bottom: 2px solid $dropdown-hover-bg;
+      }
+
+      &:hover {
+        color: $dropdown-hover-bg;
+      }
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .dropdown {
+      position: relative;
+
+      .material-symbols-outlined {
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        right: 0;
+        background-color: $dropdown-bg;
+        color: $dropdown-text-color;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+        flex-direction: column;
+        width: 150px;
+        z-index: 1000;
+
+        a {
+          padding: 10px 15px;
+          text-decoration: none;
+          color: $dropdown-text-color;
+          font-size: 16px;
+          font-weight: 500;
+          transition: background-color 0.3s;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $dropdown-hover-bg;
+          }
+        }
+      }
+
+      &:hover .dropdown-menu {
+        display: flex;
+      }
+    }
+
+    .material-symbols-outlined {
+      font-size: 24px;
+      cursor: pointer;
+    }
+  }
+}

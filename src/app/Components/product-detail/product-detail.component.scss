@@ -1,0 +1,97 @@
+// product-detail.component.scss
+
+$product-background: #f3f4f6;
+$product-primary: #007bff;
+$product-accent: #ff5722;
+$product-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$product-radius: 12px;
+
+.product-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $product-background;
+  padding: 0 20px;
+
+  .product-card {
+    background: white;
+    border-radius: $product-radius;
+    box-shadow: $product-shadow;
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    text-align: center;
+    padding: 40px;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .product-image {
+      img {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #e0e0e0;
+      }
+    }
+
+    .product-info {
+      padding: 20px;
+
+      .product-name {
+        font-size: 32px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .product-description {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .product-price {
+        font-size: 28px;
+        font-weight: bold;
+        color: $product-accent;
+        margin-bottom: 30px;
+      }
+
+      .buy-now-btn {
+        background: $product-primary;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 15px 40px;
+        margin: 20px;
+        border-radius: $product-radius;
+        border: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: $product-shadow;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: darken($product-primary, 10%);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: $product-shadow;
+        }
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
