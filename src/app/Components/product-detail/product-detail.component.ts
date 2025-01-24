@@ -13,43 +13,46 @@ import { CartItem } from '../../Interfaces/cart-item';
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-export class ProductDetailComponent implements OnInit{
-    product!: Product;
-    constructor(
-      private productsService: ProductsService,
-      private cartService: CartService,
-      private router: Router,
-      private route: ActivatedRoute
-    ) { }
-  
-    ngOnInit(): void {
-      const carId = +this.route.snapshot.paramMap.get('id')!;
-      this.productsService.getProductById(carId).subscribe({
-        next: (product: Product) => {
-          this.product = {
-            ...product
-          }
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      })
-    }
+export class ProductDetailComponent implements OnInit {
+  product!: Product;
 
-    addToCart(): void {
-      const quantity = 1; // Set the desired quantity
-      this.cartService.addToCart('1', {
-        id: new Date().getTime(), // Generate a unique ID for the cart item
-        productId: this.product.id,
-        quantity: quantity,
-        price: this.product.price // Include the price property
-      }).subscribe({
-        next: (item: CartItem) => {
-          console.log('Item added to cart', item);
-        },
-        error: (error) => {
-          console.error('Error adding item to cart', error);
-        }
-      });
-    }
+  constructor(
+    private productsService: ProductsService,
+    private cartService: CartService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    const productId = +this.route.snapshot.paramMap.get('id')!;
+    this.productsService.getProductById(productId).subscribe({
+      next: (product: Product) => {
+        this.product = product;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  addToCart(): void {
+    const quantity = 1; // Set the desired quantity
+    const cartItem: CartItem = {
+      id: new Date().getTime(), // Generate a unique ID for the cart item
+      userId: 1, // Assuming a static user ID for simplicity
+      productId: this.product.id,
+      quantity: quantity,
+      price: this.product.price
+    };
+
+    this.cartService.addCartItem(cartItem).subscribe({
+      next: () => {
+        this.router.navigate(['/cart']);
+        console.log('Item added to cart', cartItem);
+      },
+      error: (error) => {
+        console.error('Error adding item to cart', error);
+      }
+    });
+  }
 }

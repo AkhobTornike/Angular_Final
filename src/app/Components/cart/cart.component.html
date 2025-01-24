@@ -1,27 +1,14 @@
-<section>
-  <thead>
-    <tr>
-      <th>Product</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Total</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of cartItems">
-      <td>
-        <img [src]="item.imageUrl" alt="item.name" />
-        <span>{{ item.productName }}</span>
-      </td>
-      <td>{{ item.productPrice| currency }}</td>
-      <td>{{ item.cartItemQuantity| currency }}</td>
-      <td>
-        <button (click)="removeItem(item)">Remove</button>
-      </td>
-    </tr>
-    <tr>
-
-    </tr>
-  </tbody>
-</section>
+<div class="cart">
+  <h2>Your Cart</h2>
+  <div *ngFor="let item of cartItems" class="cart-item">
+    <p>{{ productTitles[item.productId] }}</p>
+    <p>Price: {{ item.price }}</p>
+    <p>Quantity: 
+      <input type="number" [(ngModel)]="item.quantity" (change)="changeQuantity(item.id, item.quantity)" />
+    </p>
+    <button (click)="deleteCartItem(item.id)">Remove</button>
+  </div>
+  <div class="total">
+    <p>Total: {{ getTotal() }}</p>
+  </div>
+</div>

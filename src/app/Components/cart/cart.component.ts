@@ -4,94 +4,58 @@ import { CartService } from '../../Services/cart.service';
 import { ProductsService } from '../../Services/products.service';
 import { CartItem } from '../../Interfaces/cart-item';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent implements OnInit{
-  isCartOpen = false;
-  cartItems: { cartItemId: number, productName: string, productPrice: number, cartItemQuantity: number, imageUrl: string }[] = [];
-  userId: string = 'defaultUserId';
+export class CartComponent implements OnInit {
+  cartItems: CartItem[] = [];
+  productTitles: { [key: number]: string } = {};
 
-  constructor(
-    private cartService: CartService,
-    private productService: ProductsService,
-    @Inject(ActivatedRoute) private route: ActivatedRoute
-  ) { }
+  constructor(private cartService: CartService, private productService: ProductsService) {}
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id') || '1';
-    this.cartService.getCart(this.userId).subscribe({
-      next: (cartItems: CartItem[]) => {
-        cartItems.map((item: CartItem) => {
-          this.productService.getProductById(item.productId).subscribe({
-            next: (product) => {
-              this.cartItems.push({
-                cartItemId: item.id,
-                productName: product.name,
-                productPrice: product.price,
-                cartItemQuantity: item.quantity,
-                imageUrl: product.imageUrl
-              });
-            },
-            error: (error) => {
-              console.error(error);
-            }
-          });
-        });
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-    console.log('Cart component initialized', this.cartItems);
-    this.showCart();
+    this.loadCartItems();
   }
 
-  showCart(): void {
-    this.cartService.getCart(this.userId).subscribe({
-      next: (cartItems: CartItem[]) => {
-        cartItems.map((item: CartItem) => {
-          this.productService.getProductById(item.productId).subscribe({
-            next: (product) => {
-              this.cartItems.push({
-                cartItemId: item.id,
-                productName: product.name,
-                productPrice: product.price,
-                cartItemQuantity: item.quantity,
-                imageUrl: product.imageUrl
-              });
-            },
-            error: (error) => {
-              console.error(error);
-            }
-          });
-        });
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  loadCartItems() {
+    this.cartService.getCartItems().subscribe(items => {
+      this.cartItems = items;
+      this.cartItems.forEach(item => this.loadProductTitle(item.productId));
     });
   }
 
-  // Open the cart
-  openCart() {
-    this.isCartOpen = true;
+  loadProductTitle(productId: number) {
+    this.productService.getProductById(productId).subscribe(product => {
+      this.productTitles[productId] = product.name;
+    });
   }
 
-  // Close the cart
-  closeCart() {
-    this.isCartOpen = false;
+  addCartItem(item: CartItem) {
+    this.cartService.addCartItem(item).subscribe(() => {
+      this.loadCartItems();
+    });
   }
 
-  removeItem(cartItemId: number) {}
+  deleteCartItem(itemId: number) {
+    this.cartService.deleteCartItem(itemId).subscribe(() => {
+      this.loadCartItems();
+    });
+  }
+
+  changeQuantity(itemId: number, quantity: number) {
+    this.cartService.changeQuantity(itemId, quantity).subscribe(() => {
+      this.loadCartItems();
+    });
+  }
 
   // Calculate the total price
   getTotal() {
-    return this.cartItems.reduce((total, item) => total + item.productPrice * item.cartItemQuantity, 0);
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 }
